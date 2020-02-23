@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+spec:
+  template:
+    metadata:
+      labels:
+        name: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      restartPolicy: {{ .Values.jobs.restartPolicy }}  
+      containers:
+      - image: "{{ .Values.jobs.image }}:{{ .Values.jobs.tag }}"
+        imagePullPolicy: {{ .Values.chromeDebug.imagePullPolicy }}
+        name: "{{ .Chart.Name }}"
+      initContainers:
+       - name: wait-for-hub
+         image: "{{ .Values.jobs.imageInitContainer }}:{{ .Values.jobs.tag }}"
+         imagePullPolicy: {{ .Values.jobs.imagePullPolicy }}
+         args: [ "{{ .Values.args.resourceName }}" , "{{ .Values.args.name }}" ]
+         
+

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "selenium.chromeDebug.fullname" . }}
+  labels:
+    app: {{ template "selenium.chromeDebug.fullname" . }}
+spec:
+  type: LoadBalancer
+  sessionAffinity: {{ .Values.hub.serviceSessionAffinity | quote }}
+  ports:
+  - name: chrome-debug
+    port: {{ .Values.chromeDebug.vncPort }}
+    targetPort: {{ .Values.chromeDebug.vncPort }}
+
+  selector:
+    app: {{ template "selenium.chromeDebug.fullname" . }}
