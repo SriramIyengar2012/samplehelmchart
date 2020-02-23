@@ -1,10 +1,5 @@
 # Selenium
 
-## TL;DR;
-
-```console
-$ helm install stable/selenium
-```
 
 ## Introduction
 
@@ -14,12 +9,12 @@ This chart bootstraps a [Selenium](http://www.seleniumhq.org/) deployment on a [
 
 - Kubernetes 1.5+ with Beta APIs enabled
 
-## Installing the Chart
+## Installing the Chart with chrome Debug 
 
 To install the chart with the release name `my-release`:
 
 ```console
-$ helm install --name my-release stable/selenium
+$ helm install --name my-release stable/selenium --set chromeDebug=true
 ```
 
 The command deploys Selenium on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -31,7 +26,7 @@ The command deploys Selenium on the Kubernetes cluster in the default configurat
 To uninstall/delete the `my-release` deployment:
 
 ```console
-$ helm delete my-release
+$ helm delete my-release 
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -184,13 +179,12 @@ The following table lists the configurable parameters of the Selenium chart and 
 | `firefoxDebug.affinity` | Deployemnt affinities to use for scheduling of the firefoxDebug if set this takes precedence over the global value | `nil` |
 | `firefoxDebug.tolerations` | Deployment tolerations to use for scheduling of the firefoxDebug if set this takes precedence over the global value | `nil` |
 
-Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
+This uses the 'groundnuty/k8s-wait-for to wait for the hub service to be up then start the tests' 
+Jobs.yaml is the automation test that run on the selenium-hub taht got started
 
-```console
-$ helm install --name my-release \
-  --set chrome.enabled=true \
-    stable/selenium
-```
+Init Containers are used to monitor if hub is active
+ChromeDebug service is for debug of the tests being run
+
 
 Alternatively, a YAML file that specifies the values for the above parameters can be provided while installing the chart. For example,
 
